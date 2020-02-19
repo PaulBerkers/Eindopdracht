@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="AddUser" Height="250" Width="400">
     <Grid Background="LightBlue">
-        <Button Content="Save user" FontWeight="Bold" HorizontalAlignment="Left" Margin="82,126,0,0" VerticalAlignment="Top" Width="228" Height="33"/>
+        <Button Content="Save user" FontWeight="Bold" HorizontalAlignment="Left" Margin="82,126,0,0" VerticalAlignment="Top" Width="228" Height="33" Click="Button_Click"/>
         <Label Content="First Name" FontWeight="Bold" HorizontalAlignment="Left" Margin="82,45,0,0" VerticalAlignment="Top" Height="29" Width="117"/>
         <Label Content="First Name" FontWeight="Bold" HorizontalAlignment="Left" Margin="82,79,0,0" VerticalAlignment="Top" Height="29" Width="117"/>
         <TextBox x:Name="tbFirstName" HorizontalAlignment="Left" Height="29" Margin="199,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>

@@ -29,5 +29,49 @@ namespace Eindopdracht.Classes
 
             return dtData.DefaultView;
         }
+
+        public DataView GetUser()
+        {
+            conn.Open();
+
+            SqlCommand command = conn.CreateCommand();
+            command.CommandText = "select concat(FirstName, ' ', LastName) as FLnames from Mensen";
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            DataTable dtData = new DataTable();
+            dtData.Load(reader);
+
+            conn.Close();
+
+            return dtData.DefaultView;
+        }
+
+        public void AddUser(string firstName, string lastName)
+        {
+            conn.Open();
+
+            SqlCommand command = conn.CreateCommand();
+            command.CommandText = "INSERT INTO Mensen (FirstName, LastName) VALUES (@voornaam, @achternaam); ";
+            command.Parameters.AddWithValue("@voornaam", firstName);
+            command.Parameters.AddWithValue("@achternaam", lastName);
+
+            command.ExecuteNonQuery();
+
+            conn.Close();
+        }
+
+        public void Removeuser(string firstName)
+        {
+            conn.Open();
+
+            SqlCommand command = conn.CreateCommand();
+            command.CommandText = "DELETE FROM Mensen WHERE FirstName = @voornaam";
+            command.Parameters.AddWithValue("@voornaam", firstName);
+
+            command.ExecuteNonQuery();
+
+            conn.Close();
+        }
     }
 }

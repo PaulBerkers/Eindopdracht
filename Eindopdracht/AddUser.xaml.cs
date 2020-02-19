@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Eindopdracht.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,33 @@ namespace Eindopdracht
     /// </summary>
     public partial class AddUser : Window
     {
+        Database db = new Database();
         public AddUser()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (tbFirstName.Text != null && tbLastName.Text != null)
+                {
+                    db.AddUser(tbFirstName.Text, tbLastName.Text);
+                    MessageBox.Show("We hebben " + tbFirstName.Text + " " + tbLastName.Text + " toegevoegd aan de lijst");
+                    MainWindow mw = new MainWindow();
+                    mw.Show();
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Voer aub beide velden in!");
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Er is iets mis gegaan probeer het opnieuw");
+            }
         }
     }
 }
