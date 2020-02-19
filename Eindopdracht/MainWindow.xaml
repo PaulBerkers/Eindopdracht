@@ -1,0 +1,23 @@
+﻿<Window x:Class="Eindopdracht.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Eindopdracht"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid Background="LightBlue">
+        <ListBox x:Name="lbCustomers" HorizontalAlignment="Left" Height="172" Margin="36,27,0,0" VerticalAlignment="Top" Width="283"/>
+        <ListBox x:Name="lbCountries" DisplayMemberPath="omschrijving" HorizontalAlignment="Left" Height="172" Margin="466,27,0,0" VerticalAlignment="Top" Width="283"/>
+        <ListBox x:Name="lbSingleCustomer" HorizontalAlignment="Left" Height="37" Margin="36,305,0,0" VerticalAlignment="Top" Width="283"/>
+        <ListBox x:Name="lbFavorites" HorizontalAlignment="Left" Height="72" Margin="466,305,0,0" VerticalAlignment="Top" Width="283"/>
+        <Label Content="Customer&#xD;&#xA;" HorizontalAlignment="Left" Margin="36,274,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="btnCustomerPlus" Content="+" Background="Green" Foreground="White" HorizontalAlignment="Left" Margin="102,277,0,0" VerticalAlignment="Top" Width="13" Height="19" Click="btnCustomerPlus_Click"/>
+        <Button x:Name="btnCustomerMinus" Content="-" Background="Red" Foreground="White" HorizontalAlignment="Left" Margin="120,277,0,0" VerticalAlignment="Top" Width="13" Height="19"/>
+        <Label Content="Favorites&#xA;" HorizontalAlignment="Left" Margin="468,274,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="btnFavoritesPlus" Content="+" Background="Green" Foreground="White" HorizontalAlignment="Left" Margin="534,277,0,0" VerticalAlignment="Top" Width="13" Height="19"/>
+        <Button x:Name="btnFavoritesMinus" Content="-" Background="Red" Foreground="White" HorizontalAlignment="Left" Margin="552,277,0,0" VerticalAlignment="Top" Width="13" Height="19"/>
+
+
+    </Grid>
+</Window>
