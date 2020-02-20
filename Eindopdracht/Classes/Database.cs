@@ -61,7 +61,7 @@ namespace Eindopdracht.Classes
             conn.Close();
         }
 
-        public void Removeuser(string firstName)
+        public void RemoveUser(string firstName)
         {
             conn.Open();
 

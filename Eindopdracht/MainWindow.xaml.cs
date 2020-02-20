@@ -24,7 +24,7 @@ namespace Eindopdracht
     {
         Database db = new Database();
         DataView landen;
-        string selectedName;
+        DataRow selectedRow;
         public MainWindow()
         {
             InitializeComponent();
@@ -50,14 +50,15 @@ namespace Eindopdracht
 
         private void btnCustomerMinus_Click(object sender, RoutedEventArgs e)
         {
-            db.Removeuser(lbNames.SelectedItem.ToString());
+            MessageBox.Show(selectedRow[0].ToString());
+            db.RemoveUser(selectedRow[0].ToString());
+            MessageBox.Show("We hebben de volgende gebruiker verwijderd " + selectedRow[0].ToString());
         }
 
         private void lbNames_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedName = lbNames.SelectedItem.ToString();
-            MessageBox.Show(selectedName);
-            lbSingleName.Items.Add(selectedName);
+            selectedRow = ((DataRowView)lbNames.SelectedItem).Row;
+            lbSingleName.Items.Add(selectedRow[0]);
         }
     }
 }
