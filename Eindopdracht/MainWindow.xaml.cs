@@ -24,7 +24,11 @@ namespace Eindopdracht
     {
         Database db = new Database();
         DataView landen;
-        DataRow selectedRow;
+        DataRow selectedUser;
+        DataRow selectedCountry;
+        DataRow selectedCountryToRemove;
+        DataView selecteduserbyid;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -50,15 +54,69 @@ namespace Eindopdracht
 
         private void btnCustomerMinus_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(selectedRow[0].ToString());
-            db.RemoveUser(selectedRow[0].ToString());
-            MessageBox.Show("We hebben de volgende gebruiker verwijderd " + selectedRow[0].ToString());
+            db.RemoveUser(int.Parse(selectedUser[0].ToString()));
+            MessageBox.Show("We hebben de volgende gebruiker verwijderd " + selectedUser[1].ToString());
         }
 
         private void lbNames_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedRow = ((DataRowView)lbNames.SelectedItem).Row;
-            lbSingleName.Items.Add(selectedRow[0]);
+            if (lbSingleName.Items.Count > 0)
+            {
+                lbSingleName.Items.Remove(selectedUser[1]);
+            }
+            selectedUser = ((DataRowView)lbNames.SelectedItem).Row;
+            lbSingleName.Items.Add(selectedUser[1]);
+
+            selecteduserbyid = db.GetFavorites(int.Parse(selectedUser[0].ToString()));
+            foreach (var name in selecteduserbyid)
+            {
+                lbFavorites.Items.Add(name);
+                lbFavorites.DisplayMemberPath = "CountryId";
+            }
+
+        }
+
+        private void lbCountries_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            selectedCountry = ((DataRowView)lbCountries.SelectedItem).Row;
+        }
+
+        private void btnFavoritesPlus_Click(object sender, RoutedEventArgs e)
+        {
+            if (lbSingleName.Items.Count > 0)
+            {
+                if (lbFavorites.Items.Count < 3)
+                {
+                    lbFavorites.Items.Add(selectedCountry[1]);
+                    db.AddFavorite(int.Parse(selectedUser[0].ToString()), int.Parse(selectedCountry[0].ToString()));
+                    MessageBox.Show(selectedUser[1].ToString() + " heeft het volgende favoriete land: " + selectedCountry[1].ToString());
+
+                }
+                else
+                {
+                    MessageBox.Show("U kunt maar 3 favorieten landen hebben haal er eerst eentje weg voordat je een nieuwe toevoegd");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Selecteer eerst een gebruiker");
+            }
+        }
+
+        private void btnFavoritesMinus_Click(object sender, RoutedEventArgs e)
+        {
+            selectedCountryToRemove = ((DataRowView)lbFavorites.SelectedItem).Row;
+
+            if (selectedCountryToRemove != null)
+            {
+                db.RemoveFavorite(int.Parse(selectedUser[0].ToString()), int.Parse(selectedCountryToRemove[0].ToString()));
+                MessageBox.Show("Het volgende favoriete land: " + selectedCountryToRemove[1].ToString() + "Is succesvol verwijderd van " + selectedUser[1].ToString());
+                lbFavorites.Items.Remove(selectedCountryToRemove[1].ToString());
+            }
+            else
+            {
+                MessageBox.Show("Kies eerst een land");
+            }
         }
     }
 }

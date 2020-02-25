@@ -8,15 +8,15 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid Background="LightBlue">
         <ListBox x:Name="lbNames" HorizontalAlignment="Left" Height="172" Margin="36,27,0,0" VerticalAlignment="Top" Width="283" SelectionChanged="lbNames_SelectionChanged"/>
-        <ListBox x:Name="lbCountries" DisplayMemberPath="omschrijving" HorizontalAlignment="Left" Height="172" Margin="466,27,0,0" VerticalAlignment="Top" Width="283"/>
+        <ListBox x:Name="lbCountries" DisplayMemberPath="omschrijving" HorizontalAlignment="Left" Height="172" Margin="466,27,0,0" VerticalAlignment="Top" Width="283" SelectionChanged="lbCountries_SelectionChanged"/>
         <ListBox x:Name="lbSingleName" HorizontalAlignment="Left" Height="37" Margin="36,305,0,0" VerticalAlignment="Top" Width="283"/>
         <ListBox x:Name="lbFavorites" HorizontalAlignment="Left" Height="72" Margin="466,305,0,0" VerticalAlignment="Top" Width="283"/>
         <Label Content="Customer&#xD;&#xA;" HorizontalAlignment="Left" Margin="36,274,0,0" VerticalAlignment="Top"/>
         <Button x:Name="btnCustomerPlus" Content="+" Background="Green" Foreground="White" HorizontalAlignment="Left" Margin="102,277,0,0" VerticalAlignment="Top" Width="13" Height="19" Click="btnCustomerPlus_Click"/>
         <Button x:Name="btnCustomerMinus" Content="-" Background="Red" Foreground="White" HorizontalAlignment="Left" Margin="120,277,0,0" VerticalAlignment="Top" Width="13" Height="19" Click="btnCustomerMinus_Click"/>
         <Label Content="Favorites&#xA;" HorizontalAlignment="Left" Margin="468,274,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="btnFavoritesPlus" Content="+" Background="Green" Foreground="White" HorizontalAlignment="Left" Margin="534,277,0,0" VerticalAlignment="Top" Width="13" Height="19"/>
-        <Button x:Name="btnFavoritesMinus" Content="-" Background="Red" Foreground="White" HorizontalAlignment="Left" Margin="552,277,0,0" VerticalAlignment="Top" Width="13" Height="19"/>
+        <Button x:Name="btnFavoritesPlus" Content="+" Background="Green" Foreground="White" HorizontalAlignment="Left" Margin="534,277,0,0" VerticalAlignment="Top" Width="13" Height="19" Click="btnFavoritesPlus_Click"/>
+        <Button x:Name="btnFavoritesMinus" Content="-" Background="Red" Foreground="White" HorizontalAlignment="Left" Margin="552,277,0,0" VerticalAlignment="Top" Width="13" Height="19" Click="btnFavoritesMinus_Click"/>
 
 
     </Grid>
