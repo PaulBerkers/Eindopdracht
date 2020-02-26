@@ -102,7 +102,7 @@ namespace Eindopdracht.Classes
             conn.Close();
         }
 
-        public DataView GetFavorites(int PersonID)
+        public List<int> GetCountryIDsByPersonID(int PersonID)
         {
             conn.Open();
 
@@ -112,12 +112,25 @@ namespace Eindopdracht.Classes
 
             SqlDataReader reader = command.ExecuteReader();
 
+
             DataTable dtData = new DataTable();
             dtData.Load(reader);
 
             conn.Close();
 
-            return dtData.DefaultView;
+            if (dtData.Rows.Count == 0)
+            {
+                return null;
+            }
+
+            var countryIDs = new List<int>();
+
+            for (var i = 0; i < dtData.Rows.Count; i++)
+            {
+                countryIDs.Add(int.Parse(dtData.Rows[i]["CountryId"].ToString()));
+            }
+
+            return countryIDs;
         }
         public DataView GetFavoritesCountry(int CountryID)
         {
@@ -128,6 +141,8 @@ namespace Eindopdracht.Classes
             command.Parameters.AddWithValue("@landid", CountryID);
 
             SqlDataReader reader = command.ExecuteReader();
+
+
 
             DataTable dtData = new DataTable();
             dtData.Load(reader);

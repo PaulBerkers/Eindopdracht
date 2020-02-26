@@ -24,10 +24,11 @@ namespace Eindopdracht
     {
         Database db = new Database();
         DataView landen;
+        DataView favorites;
         DataRow selectedUser;
         DataRow selectedCountry;
         DataRow selectedCountryToRemove;
-        DataView selecteduserbyid;
+        List<int> selecteduserbyid;
 
         public MainWindow()
         {
@@ -56,6 +57,7 @@ namespace Eindopdracht
         {
             db.RemoveUser(int.Parse(selectedUser[0].ToString()));
             MessageBox.Show("We hebben de volgende gebruiker verwijderd " + selectedUser[1].ToString());
+            lbNames.Items.Refresh();
         }
 
         private void lbNames_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -67,13 +69,18 @@ namespace Eindopdracht
             selectedUser = ((DataRowView)lbNames.SelectedItem).Row;
             lbSingleName.Items.Add(selectedUser[1]);
 
-            selecteduserbyid = db.GetFavorites(int.Parse(selectedUser[0].ToString()));
-            foreach (var name in selecteduserbyid)
-            {
-                lbFavorites.Items.Add(name);
-                lbFavorites.DisplayMemberPath = "CountryId";
-            }
+            selecteduserbyid = db.GetCountryIDsByPersonID(int.Parse(selectedUser[0].ToString()));
 
+            lbFavorites.Items.Clear();
+
+            foreach (int countryID in selecteduserbyid)
+            {
+                lbFavorites.DisplayMemberPath = "omschrijving";
+                favorites = db.GetFavoritesCountry(countryID);
+
+                lbFavorites.Items.Add(favorites);
+
+            }
         }
 
         private void lbCountries_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -86,11 +93,10 @@ namespace Eindopdracht
             if (lbSingleName.Items.Count > 0)
             {
                 if (lbFavorites.Items.Count < 3)
-                {
-                    lbFavorites.Items.Add(selectedCountry[1]);
+                { 
                     db.AddFavorite(int.Parse(selectedUser[0].ToString()), int.Parse(selectedCountry[0].ToString()));
                     MessageBox.Show(selectedUser[1].ToString() + " heeft het volgende favoriete land: " + selectedCountry[1].ToString());
-
+                    lbFavorites.Items.Refresh();
                 }
                 else
                 {
@@ -111,7 +117,7 @@ namespace Eindopdracht
             {
                 db.RemoveFavorite(int.Parse(selectedUser[0].ToString()), int.Parse(selectedCountryToRemove[0].ToString()));
                 MessageBox.Show("Het volgende favoriete land: " + selectedCountryToRemove[1].ToString() + "Is succesvol verwijderd van " + selectedUser[1].ToString());
-                lbFavorites.Items.Remove(selectedCountryToRemove[1].ToString());
+                lbFavorites.Items.Refresh();
             }
             else
             {
