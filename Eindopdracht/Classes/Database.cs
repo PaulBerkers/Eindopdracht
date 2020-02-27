@@ -142,8 +142,6 @@ namespace Eindopdracht.Classes
 
             SqlDataReader reader = command.ExecuteReader();
 
-
-
             DataTable dtData = new DataTable();
             dtData.Load(reader);
 

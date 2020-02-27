@@ -25,9 +25,9 @@ namespace Eindopdracht
         Database db = new Database();
         DataView landen;
         DataView favorites;
+        DataRow selectedCountryToRemove;
         DataRow selectedUser;
         DataRow selectedCountry;
-        DataRow selectedCountryToRemove;
         List<int> selecteduserbyid;
 
         public MainWindow()
@@ -57,30 +57,28 @@ namespace Eindopdracht
         {
             db.RemoveUser(int.Parse(selectedUser[0].ToString()));
             MessageBox.Show("We hebben de volgende gebruiker verwijderd " + selectedUser[1].ToString());
-            lbNames.Items.Refresh();
+            lbNames.ItemsSource = db.GetUser();
         }
 
         private void lbNames_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (lbSingleName.Items.Count > 0)
+            try
             {
-                lbSingleName.Items.Remove(selectedUser[1]);
-            }
-            selectedUser = ((DataRowView)lbNames.SelectedItem).Row;
-            lbSingleName.Items.Add(selectedUser[1]);
+                if (lbSingleName.Items.Count > 0)
+                {
+                    lbSingleName.Items.Remove(selectedUser[1]);
+                }
+                selectedUser = ((DataRowView)lbNames.SelectedItem).Row;
 
-            selecteduserbyid = db.GetCountryIDsByPersonID(int.Parse(selectedUser[0].ToString()));
-
-            lbFavorites.Items.Clear();
-
-            foreach (int countryID in selecteduserbyid)
-            {
-                lbFavorites.DisplayMemberPath = "omschrijving";
-                favorites = db.GetFavoritesCountry(countryID);
-
-                lbFavorites.Items.Add(favorites);
+                lbSingleName.Items.Add(selectedUser[1]);
+                GetFavorites();
 
             }
+            catch (Exception)
+            {
+
+            }
+           
         }
 
         private void lbCountries_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -96,7 +94,7 @@ namespace Eindopdracht
                 { 
                     db.AddFavorite(int.Parse(selectedUser[0].ToString()), int.Parse(selectedCountry[0].ToString()));
                     MessageBox.Show(selectedUser[1].ToString() + " heeft het volgende favoriete land: " + selectedCountry[1].ToString());
-                    lbFavorites.Items.Refresh();
+                    GetFavorites();
                 }
                 else
                 {
@@ -111,17 +109,49 @@ namespace Eindopdracht
 
         private void btnFavoritesMinus_Click(object sender, RoutedEventArgs e)
         {
-            selectedCountryToRemove = ((DataRowView)lbFavorites.SelectedItem).Row;
-
             if (selectedCountryToRemove != null)
             {
                 db.RemoveFavorite(int.Parse(selectedUser[0].ToString()), int.Parse(selectedCountryToRemove[0].ToString()));
                 MessageBox.Show("Het volgende favoriete land: " + selectedCountryToRemove[1].ToString() + "Is succesvol verwijderd van " + selectedUser[1].ToString());
-                lbFavorites.Items.Refresh();
+                GetFavorites();
             }
             else
             {
                 MessageBox.Show("Kies eerst een land");
+            }
+        }
+
+        private void GetFavorites()
+        {
+            selecteduserbyid = db.GetCountryIDsByPersonID(int.Parse(selectedUser[0].ToString()));
+
+            lbFavorites.Items.Clear();
+
+            if (selecteduserbyid != null)
+            {
+                lbFavorites.DisplayMemberPath = "omschrijving";
+
+                foreach (var land in selecteduserbyid)
+                {
+                    favorites = db.GetFavoritesCountry(land);
+                    foreach (var favoriet in favorites)
+                    {
+                        lbFavorites.Items.Add(favoriet);
+                    }
+                }
+              
+            }
+        }
+
+        private void lbFavorites_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                selectedCountryToRemove = ((DataRowView)lbFavorites.SelectedItem).Row;
+            }
+            catch (Exception)
+            {
+
             }
         }
     }
