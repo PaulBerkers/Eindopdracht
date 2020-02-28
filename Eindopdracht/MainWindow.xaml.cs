@@ -129,7 +129,7 @@ namespace Eindopdracht
 
             if (selecteduserbyid != null)
             {
-                lbFavorites.DisplayMemberPath = "omschrijving";
+                lbFavorites.DisplayMemberPath = "country";
 
                 foreach (var land in selecteduserbyid)
                 {

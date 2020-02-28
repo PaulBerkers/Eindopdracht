@@ -11,14 +11,14 @@ namespace Eindopdracht.Classes
     public class Database
     {
         SqlConnection conn = new SqlConnection(@"Data Source=(localdb)\mssqllocaldb; 
-                                                Initial Catalog=Countries;Integrated Security=True");
+                                                Initial Catalog=FavouriteCountries;Integrated Security=True");
 
         public DataView GetLanden()
         {
             conn.Open();
 
             SqlCommand command = conn.CreateCommand();
-            command.CommandText = "select * from tblLanden";
+            command.CommandText = "select * from Countries";
 
             SqlDataReader reader = command.ExecuteReader();
 
@@ -35,7 +35,7 @@ namespace Eindopdracht.Classes
             conn.Open();
 
             SqlCommand command = conn.CreateCommand();
-            command.CommandText = "select PersonId, concat(FirstName, ' ', LastName) as FLnames from Mensen";
+            command.CommandText = "select PersonId, concat(FirstName, ' ', LastName) as FLnames from People";
 
             SqlDataReader reader = command.ExecuteReader();
 
@@ -52,7 +52,7 @@ namespace Eindopdracht.Classes
             conn.Open();
 
             SqlCommand command = conn.CreateCommand();
-            command.CommandText = "INSERT INTO Mensen (FirstName, LastName) VALUES (@voornaam, @achternaam); ";
+            command.CommandText = "INSERT INTO People (FirstName, LastName) VALUES (@voornaam, @achternaam); ";
             command.Parameters.AddWithValue("@voornaam", firstName);
             command.Parameters.AddWithValue("@achternaam", lastName);
 
@@ -66,7 +66,7 @@ namespace Eindopdracht.Classes
             conn.Open();
 
             SqlCommand command = conn.CreateCommand();
-            command.CommandText = "DELETE FROM Mensen WHERE PersonId = @id";
+            command.CommandText = "DELETE FROM People WHERE PersonId = @id";
             command.Parameters.AddWithValue("@id", ID);
 
             command.ExecuteNonQuery();
@@ -137,7 +137,7 @@ namespace Eindopdracht.Classes
             conn.Open();
 
             SqlCommand command = conn.CreateCommand();
-            command.CommandText = "select * from tbllanden where code = @landid";
+            command.CommandText = "select * from Countries where id = @landid";
             command.Parameters.AddWithValue("@landid", CountryID);
 
             SqlDataReader reader = command.ExecuteReader();
