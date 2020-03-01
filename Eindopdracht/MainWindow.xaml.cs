@@ -112,7 +112,7 @@ namespace Eindopdracht
             if (selectedCountryToRemove != null)
             {
                 db.RemoveFavorite(int.Parse(selectedUser[0].ToString()), int.Parse(selectedCountryToRemove[0].ToString()));
-                MessageBox.Show("Het volgende favoriete land: " + selectedCountryToRemove[1].ToString() + "Is succesvol verwijderd van " + selectedUser[1].ToString());
+                MessageBox.Show("Het volgende favoriete land: " + selectedCountryToRemove[1].ToString() + " Is succesvol verwijderd van " + selectedUser[1].ToString());
                 GetFavorites();
             }
             else
