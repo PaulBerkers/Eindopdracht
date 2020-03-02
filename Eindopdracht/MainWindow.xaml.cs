@@ -36,7 +36,6 @@ namespace Eindopdracht
 
             lbNames.UpdateLayout();
             lbNames.ItemsSource = db.GetUser();
-            lbNames.DisplayMemberPath = "FLnames";
 
             landen = db.GetLanden();
             foreach (var land in landen)
