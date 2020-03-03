@@ -26,7 +26,6 @@ namespace Eindopdracht
         DataView _landen;
         DataView _personen;
         DataView _favourites;
-        DataView _singleperson;
         DataRow selectedCountryToRemove;
         DataRow selectedUser;
         DataRow selectedCountry;
@@ -34,7 +33,6 @@ namespace Eindopdracht
         public DataView Landen { get => _landen; set { _landen = value; NotifyPropertyChanged();  } }
         public DataView Personen { get => _personen; set { _personen = value; NotifyPropertyChanged(); } }
         public DataView Favourit { get => _favourites; set { _favourites = value; NotifyPropertyChanged(); } }
-        public DataView SinglePerson { get => _singleperson; set { _singleperson = value; NotifyPropertyChanged(); } }
 
         public MainWindow()
         {
@@ -87,22 +85,15 @@ namespace Eindopdracht
 
         private void btnFavoritesPlus_Click(object sender, RoutedEventArgs e)
         {
-            if (db.GetFavoritesCountry(int.Parse(selectedUser[0].ToString())).Count > 0)
-            {
-                if (db.GetFavoritesCountry(int.Parse(selectedUser[0].ToString())).Count < 3)
-                { 
-                    db.AddFavorite(int.Parse(selectedUser[0].ToString()), int.Parse(selectedCountry[0].ToString()));
-                    MessageBox.Show(selectedUser[1].ToString() + " heeft het volgende favoriete land: " + selectedCountry[1].ToString());
-                    GetFavorites();
-                }
-                else
-                {
-                    MessageBox.Show("U kunt maar 3 favorieten landen hebben haal er eerst eentje weg voordat je een nieuwe toevoegd");
-                }
+            if (db.GetFavoritesCountry(int.Parse(selectedUser[0].ToString())).Count < 3)
+            { 
+                db.AddFavorite(int.Parse(selectedUser[0].ToString()), int.Parse(selectedCountry[0].ToString()));
+                MessageBox.Show(selectedUser[1].ToString() + " heeft het volgende favoriete land: " + selectedCountry[1].ToString());
+                GetFavorites();
             }
             else
             {
-                MessageBox.Show("Selecteer eerst een gebruiker");
+                MessageBox.Show("U kunt maar 3 favorieten landen hebben haal er eerst eentje weg voordat je een nieuwe toevoegd");
             }
         }
 
