@@ -1,48 +1,48 @@
-﻿using Eindopdracht.Classes;
+﻿
+
+using Eindopdracht.Classes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Eindopdracht
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         Database db = new Database();
         DataView landen;
+        DataView _personen;
         DataView favorites;
         DataRow selectedCountryToRemove;
         DataRow selectedUser;
         DataRow selectedCountry;
         List<int> selecteduserbyid;
 
+        public DataView Landen { get => landen; set { landen = value; NotifyPropertyChanged();  } }
+
+        public DataView Personen { get => _personen; set { _personen = value; NotifyPropertyChanged(); } }
+
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = this;
 
-            lbNames.UpdateLayout();
-            lbNames.ItemsSource = db.GetUser();
-
-            landen = db.GetLanden();
-            foreach (var land in landen)
-            {
-                lbCountries.Items.Add(land);
-            }
-
+            Personen = db.GetUser();
+            Landen = db.GetLanden();
         }
 
         private void btnCustomerPlus_Click(object sender, RoutedEventArgs e)
@@ -56,7 +56,7 @@ namespace Eindopdracht
         {
             db.RemoveUser(int.Parse(selectedUser[0].ToString()));
             MessageBox.Show("We hebben de volgende gebruiker verwijderd " + selectedUser[1].ToString());
-            lbNames.ItemsSource = db.GetUser();
+            Personen = db.GetUser();
         }
 
         private void lbNames_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -138,7 +138,6 @@ namespace Eindopdracht
                         lbFavorites.Items.Add(favoriet);
                     }
                 }
-              
             }
         }
 
