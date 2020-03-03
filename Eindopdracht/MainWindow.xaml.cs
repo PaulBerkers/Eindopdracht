@@ -16,7 +16,6 @@ namespace Eindopdracht
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
@@ -24,17 +23,18 @@ namespace Eindopdracht
         }
 
         Database db = new Database();
-        DataView landen;
+        DataView _landen;
         DataView _personen;
-        DataView favorites;
+        DataView _favourites;
+        DataView _singleperson;
         DataRow selectedCountryToRemove;
         DataRow selectedUser;
         DataRow selectedCountry;
-        List<int> selecteduserbyid;
 
-        public DataView Landen { get => landen; set { landen = value; NotifyPropertyChanged();  } }
-
+        public DataView Landen { get => _landen; set { _landen = value; NotifyPropertyChanged();  } }
         public DataView Personen { get => _personen; set { _personen = value; NotifyPropertyChanged(); } }
+        public DataView Favourit { get => _favourites; set { _favourites = value; NotifyPropertyChanged(); } }
+        public DataView SinglePerson { get => _singleperson; set { _singleperson = value; NotifyPropertyChanged(); } }
 
         public MainWindow()
         {
@@ -87,9 +87,9 @@ namespace Eindopdracht
 
         private void btnFavoritesPlus_Click(object sender, RoutedEventArgs e)
         {
-            if (lbSingleName.Items.Count > 0)
+            if (db.GetFavoritesCountry(int.Parse(selectedUser[0].ToString())).Count > 0)
             {
-                if (lbFavorites.Items.Count < 3)
+                if (db.GetFavoritesCountry(int.Parse(selectedUser[0].ToString())).Count < 3)
                 { 
                     db.AddFavorite(int.Parse(selectedUser[0].ToString()), int.Parse(selectedCountry[0].ToString()));
                     MessageBox.Show(selectedUser[1].ToString() + " heeft het volgende favoriete land: " + selectedCountry[1].ToString());
@@ -110,8 +110,9 @@ namespace Eindopdracht
         {
             if (selectedCountryToRemove != null)
             {
-                db.RemoveFavorite(int.Parse(selectedUser[0].ToString()), int.Parse(selectedCountryToRemove[0].ToString()));
-                MessageBox.Show("Het volgende favoriete land: " + selectedCountryToRemove[1].ToString() + " Is succesvol verwijderd van " + selectedUser[1].ToString());
+
+                db.RemoveFavorite(int.Parse(selectedUser[0].ToString()), int.Parse(selectedCountryToRemove[1].ToString()));
+                MessageBox.Show("Het volgende favoriete land: " + selectedCountryToRemove[0].ToString() + " Is succesvol verwijderd van " + selectedUser[1].ToString());
                 GetFavorites();
             }
             else
@@ -122,23 +123,7 @@ namespace Eindopdracht
 
         private void GetFavorites()
         {
-            selecteduserbyid = db.GetCountryIDsByPersonID(int.Parse(selectedUser[0].ToString()));
-
-            lbFavorites.Items.Clear();
-
-            if (selecteduserbyid != null)
-            {
-                lbFavorites.DisplayMemberPath = "country";
-
-                foreach (var land in selecteduserbyid)
-                {
-                    favorites = db.GetFavoritesCountry(land);
-                    foreach (var favoriet in favorites)
-                    {
-                        lbFavorites.Items.Add(favoriet);
-                    }
-                }
-            }
+            Favourit = db.GetFavoritesCountry(int.Parse(selectedUser[0].ToString()));
         }
 
         private void lbFavorites_SelectionChanged(object sender, SelectionChangedEventArgs e)

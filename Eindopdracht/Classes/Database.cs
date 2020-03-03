@@ -102,43 +102,13 @@ namespace Eindopdracht.Classes
             conn.Close();
         }
 
-        public List<int> GetCountryIDsByPersonID(int PersonID)
+        public DataView GetFavoritesCountry(int PersonID)
         {
             conn.Open();
 
             SqlCommand command = conn.CreateCommand();
-            command.CommandText = "select CountryId from Favourites where PersonId = @persoonsid";
-            command.Parameters.AddWithValue("@persoonsid", PersonID);
-
-            SqlDataReader reader = command.ExecuteReader();
-
-
-            DataTable dtData = new DataTable();
-            dtData.Load(reader);
-
-            conn.Close();
-
-            if (dtData.Rows.Count == 0)
-            {
-                return null;
-            }
-
-            var countryIDs = new List<int>();
-
-            for (var i = 0; i < dtData.Rows.Count; i++)
-            {
-                countryIDs.Add(int.Parse(dtData.Rows[i]["CountryId"].ToString()));
-            }
-
-            return countryIDs;
-        }
-        public DataView GetFavoritesCountry(int CountryID)
-        {
-            conn.Open();
-
-            SqlCommand command = conn.CreateCommand();
-            command.CommandText = "select * from Countries where id = @landid";
-            command.Parameters.AddWithValue("@landid", CountryID);
+            command.CommandText = "select Countries.country, Countries.id from Favourites INNER JOIN Countries ON Countries.id = Favourites.CountryId where PersonId = @personid;";
+            command.Parameters.AddWithValue("@personid", PersonID);
 
             SqlDataReader reader = command.ExecuteReader();
 
